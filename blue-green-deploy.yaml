@@ -1,4 +1,4 @@
-# V1: httpd 2.4
+# V1: httpd 2.4.41
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: app-v1
-          image: docker.registry.io/httpd:2.4
+          image: docker.registry.io/httpd:2.4.41
           ports:
             - containerPort: 80
 
