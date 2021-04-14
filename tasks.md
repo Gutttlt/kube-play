@@ -1,3 +1,4 @@
+В качестве примера приложений возьмём просто Apache двух разных версий.
 Репликасет с Apache 2.4.41:
 ```bash
 $ curl https://raw.githubusercontent.com/Gutttlt/kube-play/main/blue-green-deploy-v1.yaml
