@@ -49,3 +49,5 @@ metadata:
 spec:
   selector:
     app: app-v1
+  ports:
+    - protocol: TCP
