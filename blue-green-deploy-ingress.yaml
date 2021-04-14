@@ -7,9 +7,9 @@ metadata:
 spec:
   rules:
     - http:
-      paths:
-      - path: /app
-        backend:
-        servicename: service
-        serviceport: 80
+        paths:
+        - path: /app
+          backend:
+          servicename: service
+          serviceport: 80
         
