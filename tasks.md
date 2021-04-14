@@ -57,7 +57,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/Gutttlt/kube-play/main/blue
 deployment.apps/app-v2 created
 ```
 
-Убедимся, что всё поднялось:
+Убедимся, что всё поднялось (ну, или ещё поднимается, слишком поздно заметил):
 ```bash
 $ kubectl get rs,pods
 NAME                                DESIRED   CURRENT   READY   AGE
