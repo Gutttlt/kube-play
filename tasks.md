@@ -142,6 +142,10 @@ spec:
 $ kubectl apply -f  https://raw.githubusercontent.com/Gutttlt/kube-play/main/blue-green-deploy-ingress.yaml
 ingress.networking.k8s.io/app-ingress created
 
+$ kubectl get ingress
+NAME          HOSTS   ADDRESS       PORTS   AGE
+app-ingress   *       172.17.0.30   80      17m
+
 $ curl http://172.17.0.30/app 
 <html><body><h1>It works!</h1></body></html>
 ```
