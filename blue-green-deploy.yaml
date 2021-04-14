@@ -17,7 +17,7 @@ spec:
         - name: app-v1
           image: docker.registry.io/httpd:2.4
           ports:
-            containerPort: 80
+            - containerPort: 80
 
 # V2: httpd 2.4.46
 apiVersion: apps/v1
@@ -38,7 +38,7 @@ spec:
         - name: app-v2
           image: docker.registry.io/httpd:2.4.46
           ports:
-            containerPort: 80
+            - containerPort: 80
   
 
 
