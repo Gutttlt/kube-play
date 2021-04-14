@@ -41,15 +41,4 @@ spec:
             - containerPort: 80
   
 
-# A service
-apiVersion: v1
-kind: Service
-metadata:
-  name: service
-spec:
-  selector:
-    app: app-v1
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
+
