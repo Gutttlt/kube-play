@@ -49,7 +49,7 @@ metadata:
 spec:
   selector:
     app: app-v1
-    ports:
-      port: 80
-      targetport: 80
-      - protocol: TCP
+  ports:
+    port: 80
+    targetPort: 80
+    - protocol: TCP
