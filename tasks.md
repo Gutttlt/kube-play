@@ -300,3 +300,24 @@ $ curl http://172.17.0.30/app
   ```
 
 </details>
+
+
+**Загадка**
+
+Исправьте неправильно написанный Dockerfile
+
+Есть условное Node.js приложение, и неправильно написанный Dockerfile, который не будет кэшироваться и будет занимать много места. Нужно переписать его в соответствии с best-practice
+```bash
+#плохой файл 
+FROM ubuntu:18.04 
+COPY ./src /app 
+RUN apt-get update -y 
+RUN apt-get install -y nodejs 
+RUN npm install 
+ENTRYPOINT ["npm"] 
+CMD ["run", "prod"]
+```
+
+<details>
+  <summary>Отгадка</summary>
+</details>
