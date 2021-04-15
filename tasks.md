@@ -1,3 +1,9 @@
+<details>
+  <summary>test</summary>
+  
+test
+</details>
+
 В качестве примера приложений возьмём просто Apache двух разных версий.
 Репликасет с Apache 2.4.41:
 ```bash
