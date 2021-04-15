@@ -1,8 +1,7 @@
+# Загадка
+
 <details>
-  <summary>test</summary>
-  
-test
-</details>
+  <summary># Отгадка</summary>
 
 В качестве примера приложений возьмём просто Apache двух разных версий.
 Репликасет с Apache 2.4.41:
@@ -155,3 +154,5 @@ app-ingress   *       172.17.0.30   80      17m
 $ curl http://172.17.0.30/app 
 <html><body><h1>It works!</h1></body></html>
 ```
+
+</details>
