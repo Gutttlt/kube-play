@@ -233,5 +233,71 @@ app-ingress   *       172.17.0.30   80      17m
 $ curl http://172.17.0.30/app 
 <html><body><h1>It works!</h1></body></html>
 ```
+</details>
 
+
+**Загадка**
+
+Политика для AWS S3
+
+Напишите политику для AWS S3 бакета, которая разрешает доступ только с определенных IP адресов.
+
+<details>
+  <summary>Отгадка</summary>
+Вот полиси, разрешающая GetObject из сети DO, в которой крутится ваш веб-сайт, с моего текущего домашнего IP, а также разрешающая всё моему AWS-пользователю в этом аккаунте:
+  ```json
+{
+    "Version": "2012-10-17",
+    "Id": "DIGITALOCEAN-107-170-0-0",
+    "Statement": [
+        {
+            "Sid": "AllowS3GetObjectDO",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": [
+                "arn:aws:s3:::yarospa-test",
+                "arn:aws:s3:::yarospa-test/*"
+            ],
+            "Condition": {
+                "IpAddress": {
+                    "aws:SourceIp": [
+                        "107.170.0.0/17",
+                        "95.142.47.157/24"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "AllowOwnerS3",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::607905336588:user/yarospa_y"
+            },
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::yarospa-test",
+                "arn:aws:s3:::yarospa-test/*"
+            ]
+        }
+    ]
+}
+  
+  По умолчанию запрещено всё, что не разрешено, поэтому явный Deny не нужен. А вот явный Allow для пользователя нужен, иначе текующий пользователь не сможет вообще ничего делать с бакетом, и даже для последующего редактирования полиси нужно заходить под root'ом данного аккаунта.
+  
+  ```
+  Проверяем с машины с IP-адресом из списка разрешённых:
+  ```bash
+  gutt@v138312:~$ curl   https://yarospa-test.s3.eu-central-1.amazonaws.com/hi.txt
+  Hi! :-)
+  ```bash
+   А теперь с какой-нибудь другой:
+  ```bash
+ [gutt@berega ~]$ curl   https://yarospa-test.s3.eu-central-1.amazonaws.com/hi.txt
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>JX96D4MF7JNG14VY</RequestId><HostId>nNWEWO452bUJmGWM2lRQMRhn/foHpnjZX/kcwldkkXpWozfvr6kDxk7mOr/7ZgdGV/ZRpDHCXD4=</HostId></Error>
+  ```bash
+  
+  
+  https://yarospa-test.s3.eu-central-1.amazonaws.com/hi.txt
 </details>
