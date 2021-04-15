@@ -291,14 +291,12 @@ $ curl http://172.17.0.30/app
   ```bash
   gutt@v138312:~$ curl   https://yarospa-test.s3.eu-central-1.amazonaws.com/hi.txt
   Hi! :-)
-  ```bash
+  ```
    А теперь с какой-нибудь другой:
   ```bash
  [gutt@berega ~]$ curl   https://yarospa-test.s3.eu-central-1.amazonaws.com/hi.txt
 <?xml version="1.0" encoding="UTF-8"?>
 <Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>JX96D4MF7JNG14VY</RequestId><HostId>nNWEWO452bUJmGWM2lRQMRhn/foHpnjZX/kcwldkkXpWozfvr6kDxk7mOr/7ZgdGV/ZRpDHCXD4=</HostId></Error>
-  ```bash
-  
-  
-  https://yarospa-test.s3.eu-central-1.amazonaws.com/hi.txt
+  ```
+
 </details>
