@@ -340,9 +340,9 @@ ENV NODE_ENV production
 
 RUN su - node sh -c 'mkdir -p /home/node/app'
 WORKDIR /home/node/app
-COPY --chown=node src/package*.json src/npm-shrinkwrap.json app/ 
+COPY --chown=node src/package*.json src/npm-shrinkwrap*.json ./ 
 RUN npm ci
-COPY --chown=node src/* .
+COPY --chown=node src/* ./
 CMD [ "node", "server.js" ]
 
 USER node
