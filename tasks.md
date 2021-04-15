@@ -234,7 +234,7 @@ $ curl http://172.17.0.30/app
 <html><body><h1>It works!</h1></body></html>
 ```
 </details>
-
+---------
 
 **Загадка**
 
@@ -300,7 +300,7 @@ $ curl http://172.17.0.30/app
   ```
 
 </details>
-
+---------
 
 **Загадка**
 
