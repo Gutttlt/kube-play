@@ -1,5 +1,75 @@
 **Загадка**
 
+Демон для systemd
+
+Напишите простой демон для systemd, который будет поддерживать работу процесса и перезапускаться в случае выхода из строя процесса.
+
+<details>
+  <summary>Отгадка</summary>
+  Будем делать всё очень минималистично, но так, чтобы нескучно. Для минимализма сервисом будет netcat, пишущий в локальный файл:
+  ```bash
+  netcat -4 -l 3333 >> /tmp/dump
+  ```
+  А для веселья будем проверять non-privileged services, которые завезли в SystemD 239. Нужно же когда-нибудь это попробовать.
+  Создадим директорию и юнит-файл:
+  ```bash
+onboard@dceu0858:~$ mkdir -p .config/systemd/user/
+onboard@dceu0858:~$ cat >.config/systemd/user/mytest.service
+[Unit]
+Description="A test service"
+
+[Service]
+ExecStart=/bin/sh -c '/usr/bin/netcat -4 -l 3333 >> /tmp/dump'
+Type=simple
+Restart=always
+```
+Небольшие пояснения. Сознательно опущены After, Requres и прочее. /bin/sh вызывается для того, чтобы наш редирект в файл работал. По умолчанию SystemD не запускает никакого командного интерпретатора, а просто передаёт всё, что после имени бинарника, в качестве параметров. Type=simple потому, что sh умрёт вслед за netcat'ом, поскольку ему будет больше нечего делать. Ну, и Restart=always будет перезапускать сервис всегда, даже если exit code == 0.
+
+Скажем, что systemd-userd для моего пользователя должен стартовать вместе с системой, иначе сервис умрёт при выходе пользователя из системы:
+```bash
+onboard@dceu0858:~$ sudo loginctl enable-linger onboard
+```
+Загрузим новые юниты:
+```bash
+onboard@dceu0858:~$ systemctl --user daemon-reload
+```
+Запустим, проверим статус:
+```bash
+onboard@dceu0858:~$ systemctl --user start mytest
+onboard@dceu0858:~$ systemctl --user status mytest
+● mytest.service - "A test service"
+     Loaded: loaded (/home/onboard/.config/systemd/user/mytest.service; static; vendor preset: enabled)
+     Active: active (running) since Thu 2021-04-15 10:21:57 CEST; 4s ago
+   Main PID: 24886 (sh)
+     CGroup: /user.slice/user-1000.slice/user@1000.service/mytest.service
+             ├─24886 /bin/sh -c /usr/bin/netcat -4 -l 3333 >> /tmp/dump
+             └─24887 /usr/bin/netcat -4 -l 3333
+
+Apr 15 10:21:57 dceu0858 systemd[24709]: Started "A test service".
+```
+
+Убъём процесс и посмотрим, перезапустился ли он:
+```bash
+onboard@dceu0858:~$ kill 24887
+onboard@dceu0858:~$ systemctl --user status mytest
+● mytest.service - "A test service"
+     Loaded: loaded (/home/onboard/.config/systemd/user/mytest.service; static; vendor preset: enabled)
+     Active: active (running) since Thu 2021-04-15 10:22:27 CEST; 2s ago
+   Main PID: 24890 (sh)
+     CGroup: /user.slice/user-1000.slice/user@1000.service/mytest.service
+             ├─24890 /bin/sh -c /usr/bin/netcat -4 -l 3333 >> /tmp/dump
+             └─24891 /usr/bin/netcat -4 -l 3333
+
+Apr 15 10:22:27 dceu0858 systemd[24709]: mytest.service: Scheduled restart job, restart counter is at 1.
+Apr 15 10:22:27 dceu0858 systemd[24709]: Stopped "A test service".
+Apr 15 10:22:27 dceu0858 systemd[24709]: Started "A test service".
+```
+Всё работает ровно как и заказано.
+</details>
+
+
+**Загадка**
+
 Стратегии деплоймента
 
 Сделайте реализацию blue/green стратегии деплоймента для Kubernetes на основе деплойментов, сервиса и ingress’а и опишите как переключать версии.
